@@ -60,7 +60,8 @@ export const ValidNotifyText = styled.div`
 
 export const ContentRoot = styled.div`
   padding: 0px 30px 30px 30px;
-  max-height: 400px;
+  max-height: 500px;
+  overflow: auto;
 `;
 
 export const ContentItemBody = styled.div`

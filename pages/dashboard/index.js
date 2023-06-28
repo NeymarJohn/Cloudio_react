@@ -30,7 +30,7 @@ export default function Dashboard() {
                 Clique em alguma despesa abaixo para ver detalhes
               </Typography>
             </HistoryNotifyText>
-            <ContentRoot>
+            <ContentRoot className="scroll">
               <ContentItemBody>
                 <HistoryInfo>
                   <HistoryImage
@@ -70,8 +70,8 @@ export default function Dashboard() {
                 <ConfirmDate>
                   <Typography>Aprovada em 12/05/2022</Typography>
                 </ConfirmDate>
-                          </ContentItemBody>
-                          <ContentItemBody>
+              </ContentItemBody>
+              <ContentItemBody>
                 <HistoryInfo>
                   <HistoryImage
                     src="/img/icons/file_blue.svg"
@@ -90,8 +90,8 @@ export default function Dashboard() {
                 <ConfirmDate>
                   <Typography>Aprovada em 12/05/2022</Typography>
                 </ConfirmDate>
-                          </ContentItemBody>
-                          <ContentItemBody>
+              </ContentItemBody>
+              <ContentItemBody>
                 <HistoryInfo>
                   <HistoryImage
                     src="/img/icons/file_blue.svg"
@@ -110,8 +110,8 @@ export default function Dashboard() {
                 <ConfirmDate>
                   <Typography>Aprovada em 12/05/2022</Typography>
                 </ConfirmDate>
-                          </ContentItemBody>
-                          <ContentItemBody>
+              </ContentItemBody>
+              <ContentItemBody>
                 <HistoryInfo>
                   <HistoryImage
                     src="/img/icons/file_blue.svg"
@@ -130,8 +130,8 @@ export default function Dashboard() {
                 <ConfirmDate>
                   <Typography>Aprovada em 12/05/2022</Typography>
                 </ConfirmDate>
-                          </ContentItemBody>
-                          <ContentItemBody>
+              </ContentItemBody>
+              <ContentItemBody>
                 <HistoryInfo>
                   <HistoryImage
                     src="/img/icons/file_blue.svg"
@@ -150,8 +150,8 @@ export default function Dashboard() {
                 <ConfirmDate>
                   <Typography>Aprovada em 12/05/2022</Typography>
                 </ConfirmDate>
-                          </ContentItemBody>
-                          <ContentItemBody>
+              </ContentItemBody>
+              <ContentItemBody>
                 <HistoryInfo>
                   <HistoryImage
                     src="/img/icons/file_blue.svg"
@@ -170,8 +170,8 @@ export default function Dashboard() {
                 <ConfirmDate>
                   <Typography>Aprovada em 12/05/2022</Typography>
                 </ConfirmDate>
-                          </ContentItemBody>
-                          <ContentItemBody>
+              </ContentItemBody>
+              <ContentItemBody>
                 <HistoryInfo>
                   <HistoryImage
                     src="/img/icons/file_blue.svg"
