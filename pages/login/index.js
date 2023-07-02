@@ -2,9 +2,6 @@ import * as React from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import FormControl from "@mui/material/FormControl";
@@ -15,14 +12,15 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { LoginLayout, LoginBox } from "./index.styled";
-import { _axios } from "../../utils/axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
+import { USER_INFO } from "../../utils/constants";
+import { useAxios } from '../../hooks/useAxios';
 
 export default function Login() {
+  const { _axios } = useAxios();
   const [showPassword, setShowPassword] = React.useState(false);
   const [isSignIn, setIsSignIn] = React.useState(false);
   const router = useRouter();
@@ -48,7 +46,8 @@ export default function Login() {
         const data = response.data;
         if (data.status == 1) {
           toast.success(data.message);
-          router.push("/test");
+          Cookies.set(USER_INFO, JSON.stringify(data));
+          router.push("/app");
         } else {
           toast.error(data.message);
         }

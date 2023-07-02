@@ -1,6 +1,6 @@
 import Image from "next/image";
 import styled, { css } from "styled-components";
-
+import Link from "next/link";
 export const Title = styled.div`
   padding: 40px;
   font-family: Rubik;
@@ -64,7 +64,7 @@ export const ContentRoot = styled.div`
   overflow: auto;
 `;
 
-export const ContentItemBody = styled.div`
+export const ContentItemBody = styled(Link)`
   display: flex;
   justify-content: space-between;
   margin-top: 30px;
