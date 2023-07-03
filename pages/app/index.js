@@ -87,7 +87,7 @@ export default function Dashboard() {
               </Typography>
             </ValidNotifyText>
             <ContentRoot className="scroll">
-              <ContentItemBody href="/approve_pending">
+              <ContentItemBody href="/app/approve_pending">
                 <HistoryInfo>
                   <HistoryImage
                     src="/img/icons/file_red.svg"
