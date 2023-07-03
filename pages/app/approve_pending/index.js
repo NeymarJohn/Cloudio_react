@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import NavBar from "../../components/navbar";
+import NavBar from "../../../components/navbar";
 import {
   HistoryNotifyText,
   ContentRoot,
@@ -18,22 +18,17 @@ import {
   NoStyleContentTitle,
   NoStyleContentRoot,
   NoStyleContentItemBody,
-} from "./app.styled";
+} from "./index.styled";
 import {
   Typography,
   Drawer,
   Box,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
   Divider,
 } from "@mui/material";
 import Image from "next/image";
-import { useAxios } from "../../hooks/useAxios";
+import { useAxios } from "../../../hooks/useAxios";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { BASE_URL, USER_INFO } from "../../utils/constants";
+import { BASE_URL, USER_INFO } from "../../../utils/constants";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 
