@@ -19,34 +19,35 @@ import {
   NoStyleContentRoot,
   NoStyleContentItemBody,
 } from "./index.styled";
-import {
-  Typography,
-  Drawer,
-  Box,
-  Divider,
-} from "@mui/material";
+import { Typography, Drawer, Box, Divider } from "@mui/material";
 import Image from "next/image";
 import { useAxios } from "../../../hooks/useAxios";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { BASE_URL, USER_INFO } from "../../../utils/constants";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 
 import Cookies from "js-cookie";
 
 export default function Dashboard() {
   const [approveData, setApproveData] = React.useState([]);
+  const [schedule, setSchedule] = React.useState([]);
   const { _axios, access_token } = useAxios();
   const [openDrawer, setOpenDrawer] = React.useState(false);
   useEffect(() => {
     const userInfo = JSON.parse(Cookies.get(USER_INFO));
-    console.log(userInfo);
     _axios
       .get(
         `${BASE_URL}/employees/${userInfo.employee_id}/weeks/2023-07-03/expenses`
       )
       .then((res) => {
         console.log(res);
+        setApproveData(res.data.expenses);
+      });
+    _axios
+      .get(
+        `${BASE_URL}/employees/${userInfo.employee_id}/weeks/2023-07-03/appointments`
+      )
+      .then((res) => {
+        setSchedule(res.data.appointments);
       });
   }, []);
 
@@ -102,8 +103,7 @@ export default function Dashboard() {
           </BackButtonState>
         </SubHeaderBar>
       </div>
-      <Divider /> 
-     
+      <Divider />
     </Box>
   );
 
