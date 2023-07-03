@@ -26,6 +26,8 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { BASE_URL, USER_INFO } from "../../../utils/constants";
 
 import Cookies from "js-cookie";
+import DetailDrawer from "./DetailDrawer";
+import RejectDrawer from "./RejectDrawer";
 import ApproveDrawer from "./ApproveDrawer";
 
 export default function Dashboard() {
@@ -33,6 +35,8 @@ export default function Dashboard() {
   const [schedule, setSchedule] = React.useState([]);
   const { _axios, access_token } = useAxios();
   const [openDrawer, setOpenDrawer] = React.useState(false);
+  const [rejectDrawer, setRejectDrawer] = React.useState(false);
+  const [approveDrawer, setApproveDrawer] = React.useState(false);
   useEffect(() => {
     const userInfo = JSON.parse(Cookies.get(USER_INFO));
     _axios
@@ -56,6 +60,14 @@ export default function Dashboard() {
     setOpenDrawer(val);
   };
 
+  const toggleRejectDrawer = (val) => {
+    setRejectDrawer(val);
+  };
+
+  const toggleApproveDrawer = (val) => {
+    setApproveDrawer(val);
+  };
+
   return (
     <div className="w-screen h-screen bg-[#EAF3FF]">
       <NavBar />
@@ -69,8 +81,21 @@ export default function Dashboard() {
             </BackButtonTitle>
           </BackButtonState>
           <ButtonGroup>
-            <RejectButton>Reprovar despesas</RejectButton>
-            <ApproveButton className="ml-3">Validar Despesas</ApproveButton>
+            <RejectButton
+              onClick={() => {
+                toggleRejectDrawer(true);
+              }}
+            >
+              Reprovar despesas
+            </RejectButton>
+            <ApproveButton
+              onClick={() => {
+                toggleApproveDrawer(true);
+              }}
+              className="ml-3"
+            >
+              Validar Despesas
+            </ApproveButton>
           </ButtonGroup>
         </SubHeaderBar>
       </div>
@@ -121,7 +146,12 @@ export default function Dashboard() {
                   <Typography>R$ 240,00</Typography>
                 </ConfirmDate>
               </ContentItemBody>
-              <ContentItemBody href="/approve_pending">
+              <ContentItemBody
+                href="#"
+                onClick={() => {
+                  toggleDrawer(true);
+                }}
+              >
                 <HistoryInfo>
                   <HistoryImage
                     src="/img/icons/file_blue.svg"
@@ -151,7 +181,12 @@ export default function Dashboard() {
               <NoStyleContentTitle>
                 <Typography variant="h1">Segunda-feira, 06 de junho</Typography>
               </NoStyleContentTitle>
-              <NoStyleContentItemBody href="/approve_pending">
+              <NoStyleContentItemBody
+                href="#"
+                onClick={() => {
+                  toggleDrawer(true);
+                }}
+              >
                 <HistoryInfo>
                   <HistoryContent>
                     <Typography variant="h1">
@@ -169,7 +204,12 @@ export default function Dashboard() {
               <NoStyleContentTitle>
                 <Typography variant="h1">Segunda-feira, 06 de junho</Typography>
               </NoStyleContentTitle>
-              <NoStyleContentItemBody href="/approve_pending">
+              <NoStyleContentItemBody
+                href="#"
+                onClick={() => {
+                  toggleDrawer(true);
+                }}
+              >
                 <HistoryInfo>
                   <HistoryContent>
                     <Typography variant="h1">
@@ -187,7 +227,15 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-      <ApproveDrawer openDrawer={openDrawer} toggleDrawer={toggleDrawer} />
+      <DetailDrawer openDrawer={openDrawer} toggleDrawer={toggleDrawer} />
+      <RejectDrawer
+        openDrawer={rejectDrawer}
+        toggleDrawer={toggleRejectDrawer}
+      />
+      <ApproveDrawer
+        openDrawer={approveDrawer}
+        toggleDrawer={toggleApproveDrawer}
+      />
     </div>
   );
 }
