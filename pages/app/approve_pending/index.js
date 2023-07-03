@@ -29,6 +29,7 @@ import Cookies from "js-cookie";
 import DetailDrawer from "./DetailDrawer";
 import RejectDrawer from "./RejectDrawer";
 import ApproveDrawer from "./ApproveDrawer";
+import ScheduleDrawer from "./ScheduleDrawer";
 
 export default function Dashboard() {
   const [approveData, setApproveData] = React.useState([]);
@@ -37,6 +38,7 @@ export default function Dashboard() {
   const [openDrawer, setOpenDrawer] = React.useState(false);
   const [rejectDrawer, setRejectDrawer] = React.useState(false);
   const [approveDrawer, setApproveDrawer] = React.useState(false);
+  const [scheduleDrawer, setScheduleDrawer] = React.useState(false);
   useEffect(() => {
     const userInfo = JSON.parse(Cookies.get(USER_INFO));
     _axios
@@ -66,6 +68,10 @@ export default function Dashboard() {
 
   const toggleApproveDrawer = (val) => {
     setApproveDrawer(val);
+  };
+
+  const toggleScheduleDrawer = (val) => {
+    setScheduleDrawer(val);
   };
 
   return (
@@ -184,7 +190,7 @@ export default function Dashboard() {
               <NoStyleContentItemBody
                 href="#"
                 onClick={() => {
-                  toggleDrawer(true);
+                  toggleScheduleDrawer(true);
                 }}
               >
                 <HistoryInfo>
@@ -207,7 +213,7 @@ export default function Dashboard() {
               <NoStyleContentItemBody
                 href="#"
                 onClick={() => {
-                  toggleDrawer(true);
+                  toggleScheduleDrawer(true);
                 }}
               >
                 <HistoryInfo>
@@ -235,6 +241,10 @@ export default function Dashboard() {
       <ApproveDrawer
         openDrawer={approveDrawer}
         toggleDrawer={toggleApproveDrawer}
+      />
+      <ScheduleDrawer
+        openDrawer={scheduleDrawer}
+        toggleDrawer={toggleScheduleDrawer}
       />
     </div>
   );
