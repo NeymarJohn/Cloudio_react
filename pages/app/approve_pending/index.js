@@ -19,13 +19,14 @@ import {
   NoStyleContentRoot,
   NoStyleContentItemBody,
 } from "./index.styled";
-import { Typography, Drawer, Box, Divider } from "@mui/material";
+import { Typography } from "@mui/material";
 import Image from "next/image";
 import { useAxios } from "../../../hooks/useAxios";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { BASE_URL, USER_INFO } from "../../../utils/constants";
 
 import Cookies from "js-cookie";
+import ApproveDrawer from "./ApproveDrawer";
 
 export default function Dashboard() {
   const [approveData, setApproveData] = React.useState([]);
@@ -54,58 +55,6 @@ export default function Dashboard() {
   const toggleDrawer = (val) => {
     setOpenDrawer(val);
   };
-
-  const list = () => (
-    <Box role="presentation">
-      <TitleBar>
-        <Typography variant="h1">Hospedagem - Nome do Hotel</Typography>
-      </TitleBar>
-      <HistoryNotifyText style={{ background: "#fff", color: "#000" }}>
-        <Typography variant="h1" style={{ color: "#000" }}>
-          Detalhes do Hotel
-        </Typography>
-      </HistoryNotifyText>
-      <div className="grid grid-cols-2 gap-5 px-16 mt-8 container">
-        <SubHeaderBar>
-          <BackButtonState>
-            <BackButtonTitle>
-              <Typography variant="h1">CNPJ ou CPF</Typography>
-              <Typography variant="h2">30.300.530/0000-00</Typography>
-            </BackButtonTitle>
-          </BackButtonState>
-        </SubHeaderBar>
-        <SubHeaderBar>
-          <BackButtonState>
-            <BackButtonTitle>
-              <Typography variant="h1">Telefone</Typography>
-              <Typography variant="h2">(34) 3237-7247</Typography>
-            </BackButtonTitle>
-          </BackButtonState>
-        </SubHeaderBar>
-      </div>
-      <div className="grid grid-cols-2 gap-5 px-16 mt-8 container">
-        <SubHeaderBar>
-          <BackButtonState>
-            <BackButtonTitle>
-              <Typography variant="h1">Nome Fantasia</Typography>
-              <Typography variant="h2">Divino Hotel</Typography>
-            </BackButtonTitle>
-          </BackButtonState>
-        </SubHeaderBar>
-        <SubHeaderBar>
-          <BackButtonState>
-            <BackButtonState>
-              <BackButtonTitle>
-                <Typography variant="h1">Razão Social</Typography>
-                <Typography variant="h2">José Divino Hotelaria LTDA</Typography>
-              </BackButtonTitle>
-            </BackButtonState>
-          </BackButtonState>
-        </SubHeaderBar>
-      </div>
-      <Divider />
-    </Box>
-  );
 
   return (
     <div className="w-screen h-screen bg-[#EAF3FF]">
@@ -238,20 +187,7 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-      <Drawer
-        sx={{
-          ".MuiDrawer-paper": {
-            width: "50vw",
-          },
-        }}
-        anchor="right"
-        open={openDrawer}
-        onClose={() => {
-          toggleDrawer(false);
-        }}
-      >
-        {list()}
-      </Drawer>
+      <ApproveDrawer openDrawer={openDrawer} toggleDrawer={toggleDrawer} />
     </div>
   );
 }
