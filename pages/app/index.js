@@ -34,7 +34,7 @@ export default function Dashboard() {
               </Typography>
             </HistoryNotifyText>
             <ContentRoot className="scroll">
-              <ContentItemBody href="/approve_pending">
+              <ContentItemBody href="/app/history_expense">
                 <HistoryInfo>
                   <HistoryImage
                     src="/img/icons/file_blue.svg"
@@ -54,7 +54,7 @@ export default function Dashboard() {
                   <Typography>Aprovada em 12/05/2022</Typography>
                 </ConfirmDate>
               </ContentItemBody>
-              <ContentItemBody href="/approve_pending">
+              <ContentItemBody href="/app/history_expense">
                 <HistoryInfo>
                   <HistoryImage
                     src="/img/icons/file_blue.svg"
