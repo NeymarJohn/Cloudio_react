@@ -1,3 +1,4 @@
+import React from "react";
 import { Drawer, Box, Typography, Divider, Button } from "@mui/material";
 import {
   HistoryNotifyText,
@@ -7,8 +8,18 @@ import {
   TitleBar,
 } from "./index.styled";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import ActiveProgressDrawer from "./ActiveProgressDrawer";
+import ActiveQuestionDrawer from "./ActiveQuestionDrawer";
 
 const ScheduleDrawer = ({ openDrawer, toggleDrawer }) => {
+  const [activeProgressDrawer, setActiveProgressDrawer] = React.useState(false);
+  const [activeQuestionDrawer, setActiveQuestionDrawer] = React.useState(false);
+  const toggleActiveProgressDrawer = (val) => {
+    setActiveProgressDrawer(val);
+  };
+  const toggleActiveQuestionDrawer = (val) => {
+    setActiveQuestionDrawer(val);
+  };
   const content = () => (
     <Box role="presentation">
       <TitleBar>
@@ -184,7 +195,7 @@ const ScheduleDrawer = ({ openDrawer, toggleDrawer }) => {
         >
           Progresso da atividade
         </Typography>
-        <Button onClick={() => showApproveContent(true)}>
+        <Button onClick={() => toggleActiveProgressDrawer(true)}>
           <ArrowForwardIcon fontSize="25" />
         </Button>
       </div>
@@ -196,7 +207,7 @@ const ScheduleDrawer = ({ openDrawer, toggleDrawer }) => {
         >
           Questionário da atividade
         </Typography>
-        <Button onClick={() => showApproveContent(true)}>
+        <Button onClick={() => toggleActiveQuestionDrawer(true)}>
           <ArrowForwardIcon fontSize="25" />
         </Button>
       </div>
@@ -216,20 +227,30 @@ const ScheduleDrawer = ({ openDrawer, toggleDrawer }) => {
     </Box>
   );
   return (
-    <Drawer
-      sx={{
-        ".MuiDrawer-paper": {
-          width: "40vw",
-        },
-      }}
-      anchor="right"
-      open={openDrawer}
-      onClose={() => {
-        toggleDrawer(false);
-      }}
-    >
-      {content()}
-    </Drawer>
+    <>
+      <Drawer
+        sx={{
+          ".MuiDrawer-paper": {
+            width: "40vw",
+          },
+        }}
+        anchor="right"
+        open={openDrawer}
+        onClose={() => {
+          toggleDrawer(false);
+        }}
+      >
+        {content()}
+      </Drawer>
+      <ActiveProgressDrawer
+        openDrawer={activeProgressDrawer}
+        toggleDrawer={toggleActiveProgressDrawer}
+      />
+      <ActiveQuestionDrawer
+        openDrawer={activeQuestionDrawer}
+        toggleDrawer={toggleActiveQuestionDrawer}
+      />
+    </>
   );
 };
 
