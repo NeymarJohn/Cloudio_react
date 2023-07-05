@@ -13,11 +13,24 @@ import {
 } from "./app.styled";
 import { Typography } from "@mui/material";
 import Image from "next/image";
-import { useAxios } from '../../hooks/useAxios'
+import { useAxios } from "../../hooks/useAxios";
+import { BASE_URL, USER_INFO } from "../../utils/constants";
+import Cookies from "js-cookie";
 export default function Dashboard() {
   const [approveData, setApproveData] = React.useState([]);
+  const [pendingData, setPendingData] = React.useState([]);
   const { _axios, access_token } = useAxios();
-  console.log(access_token);
+  React.useEffect(() => {
+    const userInfo = JSON.parse(Cookies.get(USER_INFO));
+    _axios
+      .get(
+        `${BASE_URL}/approvers/${userInfo.employee_id}/expenses/pending-approvals`
+      )
+      .then((res) => {
+        setPendingData(res.data.expenses_pending_approvals);
+      })
+      .catch((err) => {});
+  }, []);
   return (
     <div className="w-screen h-screen bg-[#EAF3FF]">
       <NavBar />
@@ -87,26 +100,30 @@ export default function Dashboard() {
               </Typography>
             </ValidNotifyText>
             <ContentRoot className="scroll">
-              <ContentItemBody href="/app/approve_pending">
-                <HistoryInfo>
-                  <HistoryImage
-                    src="/img/icons/file_red.svg"
-                    alt="file"
-                    width={30}
-                    height={30}
-                  />
-                  <HistoryContent>
-                    <Typography variant="h1">
-                      Júlia de Almeida Freitas
-                    </Typography>
-                    <Typography variant="h2">06-12 de junho</Typography>
-                    <Typography variant="h3">R$ 240,00</Typography>
-                  </HistoryContent>
-                </HistoryInfo>
-                <ConfirmDate>
-                  <Typography>Hoje</Typography>
-                </ConfirmDate>
-              </ContentItemBody>
+              {pendingData.map((item) => {
+                return (
+                  <ContentItemBody href="/app/approve_pending">
+                    <HistoryInfo>
+                      <HistoryImage
+                        src="/img/icons/file_red.svg"
+                        alt="file"
+                        width={30}
+                        height={30}
+                      />
+                      <HistoryContent>
+                        <Typography variant="h1">
+                          {item.employee_name}
+                        </Typography>
+                        <Typography variant="h2">{item.period}</Typography>
+                        <Typography variant="h3">R$ 240,00</Typography>
+                      </HistoryContent>
+                    </HistoryInfo>
+                    <ConfirmDate>
+                      <Typography>{item.sending_date}</Typography>
+                    </ConfirmDate>
+                  </ContentItemBody>
+                );
+              })}
             </ContentRoot>
           </div>
         </div>
