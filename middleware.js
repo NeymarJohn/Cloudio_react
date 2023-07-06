@@ -65,6 +65,7 @@ export async function middleware(request, response) {
     if (userInfo != null && userInfo != undefined && userInfo != '') {
       url.pathname = "/app";
     }
+    url.pathname = "/app";
     return NextResponse.redirect(url);
   }
 }

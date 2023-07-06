@@ -19,3 +19,9 @@ export const fromCurrentFarawayDate = (expire_time) => {
   let result = `${yyyy}-${mm}-${dd} ${hh}:${MM}:${SS}`;
   return result;
 };
+
+export const getYearAndMonth = (date) => {
+  // date format is 2023-06-12-05:04:18.460000
+  const result = date.slice(0, 10);
+  return result;
+};

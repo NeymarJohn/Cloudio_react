@@ -24,6 +24,7 @@ import Image from "next/image";
 import { useAxios } from "../../../hooks/useAxios";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { BASE_URL, USER_INFO } from "../../../utils/constants";
+import { getYearAndMonth } from "../../../utils/utils";
 
 import Cookies from "js-cookie";
 import DetailDrawer from "./DetailDrawer";
@@ -32,8 +33,8 @@ import ApproveDrawer from "./ApproveDrawer";
 import ScheduleDrawer from "./ScheduleDrawer";
 
 export default function Dashboard() {
-  const [approveData, setApproveData] = React.useState([]);
-  const [schedule, setSchedule] = React.useState([]);
+  const [expenseData, setExpenseData] = React.useState([]);
+  const [appointmentData, setAppointmentData] = React.useState([]);
   const { _axios, access_token } = useAxios();
   const [openDrawer, setOpenDrawer] = React.useState(false);
   const [rejectDrawer, setRejectDrawer] = React.useState(false);
@@ -41,20 +42,17 @@ export default function Dashboard() {
   const [scheduleDrawer, setScheduleDrawer] = React.useState(false);
   useEffect(() => {
     const userInfo = JSON.parse(Cookies.get(USER_INFO));
+    const employee_id = 109974;
     _axios
-      .get(
-        `${BASE_URL}/employees/${userInfo.employee_id}/weeks/2023-07-03/expenses`
-      )
+      .get(`${BASE_URL}/employees/${employee_id}/weeks/2023-06-12/expenses`)
       .then((res) => {
         console.log(res);
-        setApproveData(res.data.expenses);
+        setExpenseData(res.data.expenses);
       });
     _axios
-      .get(
-        `${BASE_URL}/employees/${userInfo.employee_id}/weeks/2023-07-03/appointments`
-      )
+      .get(`${BASE_URL}/employees/${employee_id}/weeks/2023-06-12/appointments`)
       .then((res) => {
-        setSchedule(res.data.appointments);
+        setAppointmentData(res.data.appointments);
       });
   }, []);
 
@@ -128,54 +126,35 @@ export default function Dashboard() {
               </Typography>
             </HistoryNotifyText>
             <ContentRoot className="scroll">
-              <ContentItemBody
-                href="#"
-                onClick={() => {
-                  toggleDrawer(true);
-                }}
-              >
-                <HistoryInfo>
-                  <HistoryImage
-                    src="/img/icons/file_blue.svg"
-                    alt="file"
-                    width={30}
-                    height={30}
-                  />
-                  <HistoryContent>
-                    <Typography variant="h1">
-                      Camila Rodrigues dos Santos
-                    </Typography>
-                    <Typography variant="h2">Emitido em 07/06/2022</Typography>
-                  </HistoryContent>
-                </HistoryInfo>
-                <ConfirmDate>
-                  <Typography>R$ 240,00</Typography>
-                </ConfirmDate>
-              </ContentItemBody>
-              <ContentItemBody
-                href="#"
-                onClick={() => {
-                  toggleDrawer(true);
-                }}
-              >
-                <HistoryInfo>
-                  <HistoryImage
-                    src="/img/icons/file_blue.svg"
-                    alt="file"
-                    width={30}
-                    height={30}
-                  />
-                  <HistoryContent>
-                    <Typography variant="h1">
-                      Camila Rodrigues dos Santos
-                    </Typography>
-                    <Typography variant="h2">Emitido em 07/06/2022</Typography>
-                  </HistoryContent>
-                </HistoryInfo>
-                <ConfirmDate>
-                  <Typography>R$ 240,00</Typography>
-                </ConfirmDate>
-              </ContentItemBody>
+              {expenseData.map((item, idx) => {
+                return (
+                  <ContentItemBody
+                    key={idx}
+                    href="#"
+                    onClick={() => {
+                      toggleDrawer(true);
+                    }}
+                  >
+                    <HistoryInfo>
+                      <HistoryImage
+                        src="/img/icons/file_blue.svg"
+                        alt="file"
+                        width={30}
+                        height={30}
+                      />
+                      <HistoryContent>
+                        <Typography variant="h1">
+                          Camila Rodrigues dos Santos
+                        </Typography>
+                        <Typography variant="h2">{item.status}</Typography>
+                      </HistoryContent>
+                    </HistoryInfo>
+                    <ConfirmDate>
+                      <Typography>R$ {item.total_amount}</Typography>
+                    </ConfirmDate>
+                  </ContentItemBody>
+                );
+              })}
             </ContentRoot>
           </div>
           <div className="bg-white rounded-lg">
@@ -184,51 +163,38 @@ export default function Dashboard() {
               <Typography variant="h2">06 a 12 de junho de 2022</Typography>
             </TitleBar>
             <NoStyleContentRoot className="scroll">
-              <NoStyleContentTitle>
-                <Typography variant="h1">Segunda-feira, 06 de junho</Typography>
-              </NoStyleContentTitle>
-              <NoStyleContentItemBody
-                href="#"
-                onClick={() => {
-                  toggleScheduleDrawer(true);
-                }}
-              >
-                <HistoryInfo>
-                  <HistoryContent>
-                    <Typography variant="h1">
-                      Júlia de Almeida Freitas
-                    </Typography>
-                    <Typography variant="h2">06-12 de junho</Typography>
-                    <Typography variant="h3">R$ 240,00</Typography>
-                  </HistoryContent>
-                </HistoryInfo>
-                <ConfirmDate>
-                  <Typography>Hoje</Typography>
-                </ConfirmDate>
-              </NoStyleContentItemBody>
-
-              <NoStyleContentTitle>
-                <Typography variant="h1">Segunda-feira, 06 de junho</Typography>
-              </NoStyleContentTitle>
-              <NoStyleContentItemBody
-                href="#"
-                onClick={() => {
-                  toggleScheduleDrawer(true);
-                }}
-              >
-                <HistoryInfo>
-                  <HistoryContent>
-                    <Typography variant="h1">
-                      Júlia de Almeida Freitas
-                    </Typography>
-                    <Typography variant="h2">06-12 de junho</Typography>
-                    <Typography variant="h3">R$ 240,00</Typography>
-                  </HistoryContent>
-                </HistoryInfo>
-                <ConfirmDate>
-                  <Typography>Hoje</Typography>
-                </ConfirmDate>
-              </NoStyleContentItemBody>
+              {appointmentData.map((item, idx) => {
+                return (
+                  <>
+                    <NoStyleContentTitle>
+                      <Typography variant="h1">
+                        {getYearAndMonth(item.creation_date_time)}
+                      </Typography>
+                    </NoStyleContentTitle>
+                    <NoStyleContentItemBody
+                      href="#"
+                      onClick={() => {
+                        toggleScheduleDrawer(true);
+                      }}
+                    >
+                      <HistoryInfo>
+                        <HistoryContent>
+                          <Typography variant="h1">
+                            Júlia de Almeida Freitas
+                          </Typography>
+                          <Typography variant="h2">
+                            {item.start_date} ~ {item.end_date}
+                          </Typography>
+                          <Typography variant="h3">R$ 240,00</Typography>
+                        </HistoryContent>
+                      </HistoryInfo>
+                      <ConfirmDate>
+                        <Typography>{item.tag}</Typography>
+                      </ConfirmDate>
+                    </NoStyleContentItemBody>
+                  </>
+                );
+              })}
             </NoStyleContentRoot>
           </div>
         </div>
