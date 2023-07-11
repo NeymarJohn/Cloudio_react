@@ -26,7 +26,6 @@ export const HistoryNotifyText = styled.div`
   }
 `;
 
-
 export const ContentRoot = styled.div`
   padding: 0px 30px 30px 30px;
   max-height: 500px;
@@ -116,6 +115,9 @@ export const BackButtonState = styled(Button)`
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  &:hover {
+    background: #eaf3ff;
+  }
 `;
 
 export const BackButtonTitle = styled.div`

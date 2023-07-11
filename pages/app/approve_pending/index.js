@@ -31,8 +31,11 @@ import DetailDrawer from "./DetailDrawer";
 import RejectDrawer from "./RejectDrawer";
 import ApproveDrawer from "./ApproveDrawer";
 import ScheduleDrawer from "./ScheduleDrawer";
+import { useRouter } from "next/router";
 
 export default function Dashboard() {
+  const router = useRouter();
+  const query = router.query;
   const [expenseData, setExpenseData] = React.useState([]);
   const [appointmentData, setAppointmentData] = React.useState([]);
   const { _axios, access_token } = useAxios();
@@ -72,16 +75,63 @@ export default function Dashboard() {
     setScheduleDrawer(val);
   };
 
+  const goBack = () => {
+    router.back();
+  };
+
+  const renderHistoryInfo = (item) => {
+    if (item.status == "Em Andamento") {
+      return (
+        <HistoryContent>
+          <Typography variant="h1" className="text-[#000]">
+            {item.description}
+          </Typography>
+          {item.add_on != null ? (
+            <Typography variant="h2">{item.add_on}</Typography>
+          ) : (
+            <></>
+          )}
+        </HistoryContent>
+      );
+    } else if (item.status == "Em Atraso") {
+      return (
+        <HistoryContent>
+          <Typography variant="h1" className="text-[#f83939]">
+            {item.description}
+          </Typography>
+          {item.add_on != null ? (
+            <Typography variant="h2">{item.add_on}</Typography>
+          ) : (
+            <></>
+          )}
+        </HistoryContent>
+      );
+    } else {
+      return (
+        <HistoryContent>
+          <Typography variant="h1" className="text-[#2b52dd]">
+            {item.description}
+          </Typography>
+          {item.add_on != null ? (
+            <Typography variant="h2">{item.add_on}</Typography>
+          ) : (
+            <></>
+          )}
+        </HistoryContent>
+      );
+    }
+  };
+
   return (
     <div className="w-screen h-screen bg-[#EAF3FF]">
       <NavBar />
       <div className="flex items-center justify-center">
         <SubHeaderBar className="container px-16 mt-8">
-          <BackButtonState>
+          <BackButtonState onClick={goBack}>
             <ArrowBackIcon style={{ fontSize: "25px" }}></ArrowBackIcon>
             <BackButtonTitle>
-              <Typography variant="h1">Júlia de Almeida Freitas</Typography>
-              <Typography variant="h2">Gerente de Território</Typography>
+              <Typography variant="h1">{query.employee_name}</Typography>
+              <Typography variant="h2">{query.period}</Typography>
             </BackButtonTitle>
           </BackButtonState>
           <ButtonGroup>
@@ -108,21 +158,24 @@ export default function Dashboard() {
           <div className="bg-white rounded-lg">
             <TitleBar>
               <Typography variant="h1">Despesas do período</Typography>
-              <Typography variant="h2">Envio: 13/06/2022 às 09:43</Typography>
+              <Typography variant="h2">
+                {expenseData && expenseData.length > 0
+                  ? expenseData[0].status
+                  : ""}
+              </Typography>
             </TitleBar>
             <HistoryNotifyText style={{ background: "#fff", color: "#000" }}>
               <Typography variant="h1" style={{ color: "#000" }}>
-                Observação de Júlia
+                Observação de {query.employee_name}
               </Typography>
               <Typography
                 variant="h3"
                 className="mt-3"
                 style={{ color: "rgba(189, 189, 189, 1)" }}
               >
-                We work with clients big and small across a range of sectors and
-                we utilise all forms of media to get your name out there in a
-                way that’s right for you.We work with clients big and small
-                across a range of sectors and
+                {expenseData && expenseData.length > 0
+                  ? expenseData[0].comments
+                  : ""}
               </Typography>
             </HistoryNotifyText>
             <ContentRoot className="scroll">
@@ -132,7 +185,7 @@ export default function Dashboard() {
                     key={idx}
                     href="#"
                     onClick={() => {
-                      toggleDrawer(true);
+                      toggleDrawer(item.accommodation[0]);
                     }}
                   >
                     <HistoryInfo>
@@ -159,8 +212,9 @@ export default function Dashboard() {
           </div>
           <div className="bg-white rounded-lg">
             <TitleBar>
-              <Typography variant="h1">Agenda de Júlia</Typography>
-              <Typography variant="h2">06 a 12 de junho de 2022</Typography>
+              <Typography variant="h1">
+                Agenda de {query.employee_name}
+              </Typography>
             </TitleBar>
             <NoStyleContentRoot className="scroll">
               {appointmentData.map((item, idx) => {
@@ -177,19 +231,9 @@ export default function Dashboard() {
                         toggleScheduleDrawer(true);
                       }}
                     >
-                      <HistoryInfo>
-                        <HistoryContent>
-                          <Typography variant="h1">
-                            Júlia de Almeida Freitas
-                          </Typography>
-                          <Typography variant="h2">
-                            {item.start_date} ~ {item.end_date}
-                          </Typography>
-                          <Typography variant="h3">R$ 240,00</Typography>
-                        </HistoryContent>
-                      </HistoryInfo>
+                      <HistoryInfo>{renderHistoryInfo(item)}</HistoryInfo>
                       <ConfirmDate>
-                        <Typography>{item.tag}</Typography>
+                        <Typography>{item.start_date + ' a ' + item.end_date}</Typography>
                       </ConfirmDate>
                     </NoStyleContentItemBody>
                   </>

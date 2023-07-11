@@ -16,20 +16,27 @@ import Image from "next/image";
 import { useAxios } from "../../hooks/useAxios";
 import { BASE_URL, USER_INFO } from "../../utils/constants";
 import Cookies from "js-cookie";
+import { useRouter } from "next/router";
 export default function Dashboard() {
+  const router = useRouter();
   const [approveData, setApproveData] = React.useState([]);
   const [pendingData, setPendingData] = React.useState([]);
   const { _axios, access_token } = useAxios();
   React.useEffect(() => {
-    const userInfo = JSON.parse(Cookies.get(USER_INFO));
-    _axios
-      .get(
-        `${BASE_URL}/approvers/${userInfo.employee_id}/expenses/pending-approvals`
-      )
-      .then((res) => {
-        setPendingData(res.data.expenses_pending_approvals);
-      })
-      .catch((err) => {});
+    const cookieData = Cookies.get(USER_INFO);
+    if (cookieData && cookieData != undefined) {
+      const userInfo = JSON.parse(Cookies.get(USER_INFO));
+      _axios
+        .get(
+          `${BASE_URL}/approvers/${userInfo.employee_id}/expenses/pending-approvals`
+        )
+        .then((res) => {
+          setPendingData(res.data.expenses_pending_approvals);
+        })
+        .catch((err) => {});
+    } else {
+      router.push('/login')
+    }
   }, []);
   return (
     <div className="w-screen h-screen bg-[#EAF3FF]">
@@ -102,7 +109,10 @@ export default function Dashboard() {
             <ContentRoot className="scroll">
               {pendingData.map((item) => {
                 return (
-                  <ContentItemBody href="/app/approve_pending">
+                  <ContentItemBody href={{
+                    pathname: '/app/approve_pending',
+                    query: item
+                  }}>
                     <HistoryInfo>
                       <HistoryImage
                         src="/img/icons/file_red.svg"
