@@ -298,9 +298,10 @@ const ScheduleDrawer = ({ openDrawer, toggleDrawer, appointment }) => {
         openDrawer={activeProgressDrawer}
         toggleDrawer={toggleActiveProgressDrawer}
       />
-      <ActiveQuestionDrawer
+      <ActiveQuestionDrawer 
         openDrawer={activeQuestionDrawer}
         toggleDrawer={toggleActiveQuestionDrawer}
+        appointment={appointmentsData}
       />
     </>
   );

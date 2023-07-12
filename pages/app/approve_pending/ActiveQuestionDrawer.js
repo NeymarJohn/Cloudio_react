@@ -15,7 +15,7 @@ import {
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
-const ActiveQuestionDrawer = ({ openDrawer, toggleDrawer }) => {
+const ActiveQuestionDrawer = ({ openDrawer, toggleDrawer, appointment }) => {
   const content = () => (
     <Box role="presentation" className="h-5/6">
       <div className="p-12 flex justify-between items-center">
@@ -26,10 +26,17 @@ const ActiveQuestionDrawer = ({ openDrawer, toggleDrawer }) => {
         >
           <ArrowBackIcon style={{ fontSize: "25px" }}></ArrowBackIcon>
           <BackButtonTitle>
-            <Typography variant="h1">Visita RCA Carlos Cláudio Silva</Typography>
+            <Typography variant="h1">
+              Visita{" "}
+              {appointment && appointment.objective
+                ? appointment.objective
+                : ""}
+            </Typography>
           </BackButtonTitle>
         </BackButtonState>
-        <Typography style={{color: '#838896', fontSize: '18px'}}>Questionário da Atividade</Typography>
+        <Typography style={{ color: "#838896", fontSize: "18px" }}>
+          Questionário da Atividade
+        </Typography>
       </div>
 
       <div className="bg-[#EAF3FF] px-14">
@@ -45,7 +52,8 @@ const ActiveQuestionDrawer = ({ openDrawer, toggleDrawer }) => {
         </Typography>
       </div>
       <div className="px-14 flex flex-col">
-        <Typography className="mt-5 mb-10"
+        <Typography
+          className="mt-5 mb-10"
           style={{ fontSize: "14px", color: "#616161", lineHeight: "22.4px" }}
         >
           We work with clients big and small across a range of sectors and we
@@ -57,7 +65,8 @@ const ActiveQuestionDrawer = ({ openDrawer, toggleDrawer }) => {
       <Divider />
 
       <div className="px-14 flex flex-col">
-        <Typography className="mt-5 mb-10"
+        <Typography
+          className="mt-5 mb-10"
           style={{ fontSize: "14px", color: "#616161", lineHeight: "22.4px" }}
         >
           We work with clients big and small across a range of sectors and we
