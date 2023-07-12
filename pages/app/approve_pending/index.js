@@ -40,6 +40,7 @@ export default function Dashboard() {
   const [appointmentData, setAppointmentData] = React.useState([]);
   const { _axios, access_token } = useAxios();
   const [openDrawer, setOpenDrawer] = React.useState(false);
+  const [ accommodation, setAccommodation] = React.useState([]);
   const [rejectDrawer, setRejectDrawer] = React.useState(false);
   const [approveDrawer, setApproveDrawer] = React.useState(false);
   const [scheduleDrawer, setScheduleDrawer] = React.useState(false);
@@ -49,7 +50,6 @@ export default function Dashboard() {
     _axios
       .get(`${BASE_URL}/employees/${employee_id}/weeks/2023-06-12/expenses`)
       .then((res) => {
-        console.log(res);
         setExpenseData(res.data.expenses);
       });
     _axios
@@ -59,7 +59,8 @@ export default function Dashboard() {
       });
   }, []);
 
-  const toggleDrawer = (val) => {
+  const toggleDrawer = (val, itemValue) => {
+    setAccommodation(itemValue);
     setOpenDrawer(val);
   };
 
@@ -185,7 +186,7 @@ export default function Dashboard() {
                     key={idx}
                     href="#"
                     onClick={() => {
-                      toggleDrawer(item.accommodation[0]);
+                      toggleDrawer(true, item.accommodation[0]);
                     }}
                   >
                     <HistoryInfo>
@@ -243,7 +244,7 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-      <DetailDrawer openDrawer={openDrawer} toggleDrawer={toggleDrawer} />
+      <DetailDrawer openDrawer={openDrawer} toggleDrawer={toggleDrawer} accommodation={ accommodation } />
       <RejectDrawer
         openDrawer={rejectDrawer}
         toggleDrawer={toggleRejectDrawer}

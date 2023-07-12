@@ -1,3 +1,4 @@
+import React from "react";
 import { Drawer, Box, Typography, Divider, Button } from "@mui/material";
 import {
   HistoryNotifyText,
@@ -6,8 +7,27 @@ import {
   BackButtonTitle,
   TitleBar,
 } from "./index.styled";
+import { BASE_URL, USER_INFO } from "../../../utils/constants";
+import { useAxios } from "../../../hooks/useAxios";
 
-const DetailDrawer = ({ openDrawer, toggleDrawer }) => {
+const DetailDrawer = ({ openDrawer, toggleDrawer, accommodation }) => {
+  const { _axios, access_token } = useAxios();
+  const [accommodationData, setAccommodationData] = React.useState({});
+  React.useEffect(() => {
+    if (accommodation && accommodation.sequential_number) {
+      const employee_id = 109974;
+      _axios
+        .get(
+          `${BASE_URL}/employees/${employee_id}/weeks/2023-06-12/expenses/accommodation/${accommodation.sequential_number}`
+        )
+        .then((res) => {
+          console.log(res.data.accommodation_expenses);
+          res.data.accommodation_expenses.length > 0
+            ? setAccommodationData(res.data.accommodation_expenses[0])
+            : setAccommodationData({});
+        });
+    }
+  }, [accommodation]);
   const content = () => (
     <Box role="presentation">
       <TitleBar>
@@ -32,7 +52,7 @@ const DetailDrawer = ({ openDrawer, toggleDrawer }) => {
                 variant="h2"
                 style={{ fontSize: "14px", color: "rgba(131, 136, 150, 1)" }}
               >
-                30.300.530/0000-00
+                {accommodationData.cnpj_cpf ? accommodationData.cnpj_cpf : ""}
               </Typography>
             </BackButtonTitle>
           </BackButtonState>
@@ -50,7 +70,7 @@ const DetailDrawer = ({ openDrawer, toggleDrawer }) => {
                 variant="h2"
                 style={{ fontSize: "14px", color: "rgba(131, 136, 150, 1)" }}
               >
-                (34) 3237-7247
+                {accommodationData.phone_number ? accommodationData.phone_number : ""}
               </Typography>
             </BackButtonTitle>
           </BackButtonState>
@@ -68,7 +88,7 @@ const DetailDrawer = ({ openDrawer, toggleDrawer }) => {
                 variant="h2"
                 style={{ fontSize: "14px", color: "rgba(131, 136, 150, 1)" }}
               >
-                Divino Hotel
+                {accommodationData.trade_name ? accommodationData.trade_name : ""}
               </Typography>
             </BackButtonTitle>
           </BackButtonState>
@@ -87,7 +107,7 @@ const DetailDrawer = ({ openDrawer, toggleDrawer }) => {
                   variant="h2"
                   style={{ fontSize: "14px", color: "rgba(131, 136, 150, 1)" }}
                 >
-                  José Divino Hotelaria LTDA
+                  {accommodationData.company_name ? accommodationData.company_name : ""}
                 </Typography>
               </BackButtonTitle>
             </BackButtonState>
@@ -246,7 +266,16 @@ const DetailDrawer = ({ openDrawer, toggleDrawer }) => {
         </Typography>
       </div>
       <div className="px-12 flex justify-start items-center">
-        <Button className="py-3" sx={{border: '1px solid rgba(43, 82, 221, 1)', width: '100%', borderRadius: '5px'}}>Voltar para despesas</Button>
+        <Button
+          className="py-3"
+          sx={{
+            border: "1px solid rgba(43, 82, 221, 1)",
+            width: "100%",
+            borderRadius: "5px",
+          }}
+        >
+          Voltar para despesas
+        </Button>
       </div>
     </Box>
   );
