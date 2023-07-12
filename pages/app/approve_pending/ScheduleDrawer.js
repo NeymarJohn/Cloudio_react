@@ -10,10 +10,43 @@ import {
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ActiveProgressDrawer from "./ActiveProgressDrawer";
 import ActiveQuestionDrawer from "./ActiveQuestionDrawer";
+import { BASE_URL, USER_INFO } from "../../../utils/constants";
+import { useAxios } from "../../../hooks/useAxios";
 
-const ScheduleDrawer = ({ openDrawer, toggleDrawer }) => {
+const ScheduleDrawer = ({ openDrawer, toggleDrawer, appointment }) => {
+  const { _axios, access_token } = useAxios();
   const [activeProgressDrawer, setActiveProgressDrawer] = React.useState(false);
   const [activeQuestionDrawer, setActiveQuestionDrawer] = React.useState(false);
+  const [appointmentsData, setAppointmentsData] = React.useState({});
+  const closeDrawer = () => {
+    toggleDrawer(false);
+  };
+
+  React.useEffect(() => {
+    if (appointment && appointment.creation_date_time) {
+      const employee_id = 109974;
+      _axios
+        .get(
+          `${BASE_URL}/employees/${employee_id}/appointments?creation_date_time=${appointment.creation_date_time}`
+        )
+        .then((res) => {
+          res.data.detailed_appointments.length > 0
+            ? setAppointmentsData(res.data.detailed_appointments[0])
+            : setAppointmentsData({});
+        });
+
+      // _axios
+      //   .get(
+      //     `${BASE_URL}/employees/${employee_id}/weeks/2023-06-12/expenses/transportation/${accommodation.sequential_number}`
+      //   )
+      //   .then((res) => {
+      //     res.data.accommodation_expenses.length > 0
+      //       ? setAccommodationData(res.data.accommodation_expenses[0])
+      //       : setAccommodationData({});
+      //   });
+    }
+  }, [appointment]);
+
   const toggleActiveProgressDrawer = (val) => {
     setActiveProgressDrawer(val);
   };
@@ -24,12 +57,20 @@ const ScheduleDrawer = ({ openDrawer, toggleDrawer }) => {
     <Box role="presentation">
       <TitleBar>
         <div className="flex justify-between w-full pr-14">
-          <Typography variant="h1">Visita RCA Carlos Cláudio Silva</Typography>
+          <Typography variant="h1">
+            Visita{" "}
+            {appointmentsData && appointmentsData.objective
+              ? appointmentsData.objective
+              : ""}
+          </Typography>
           <Typography
             variant="h1"
             style={{ color: "#00B354", fontSize: "10px" }}
           >
-            Visita RCA Carlos Cláudio Silva
+            Visita{" "}
+            {appointmentsData && appointmentsData.objective
+              ? appointmentsData.objective
+              : ""}
           </Typography>
         </div>
       </TitleBar>
@@ -47,7 +88,9 @@ const ScheduleDrawer = ({ openDrawer, toggleDrawer }) => {
                 variant="h2"
                 style={{ fontSize: "14px", color: "rgba(131, 136, 150, 1)" }}
               >
-                Normal
+                {appointmentsData && appointmentsData.priority
+                  ? appointmentsData.priority
+                  : ""}
               </Typography>
             </BackButtonTitle>
           </BackButtonState>
@@ -65,7 +108,11 @@ const ScheduleDrawer = ({ openDrawer, toggleDrawer }) => {
                 variant="h2"
                 style={{ fontSize: "14px", color: "rgba(131, 136, 150, 1)" }}
               >
-                De 27/02 a 05/03
+                {appointmentsData && appointmentsData.pt_BR_format_start_date
+                  ? appointmentsData.pt_BR_format_start_date +
+                    " a " +
+                    appointmentsData.pt_BR_format_end_date
+                  : ""}
               </Typography>
             </BackButtonTitle>
           </BackButtonState>
@@ -125,7 +172,10 @@ const ScheduleDrawer = ({ openDrawer, toggleDrawer }) => {
                 variant="h2"
                 style={{ fontSize: "14px", color: "rgba(131, 136, 150, 1)" }}
               >
-                Visita RCA Carlos Cláudio Silva
+                Visita{" "}
+                {appointmentsData && appointmentsData.objective
+                  ? appointmentsData.objective
+                  : ""}
               </Typography>
             </BackButtonTitle>
           </BackButtonState>
@@ -146,7 +196,9 @@ const ScheduleDrawer = ({ openDrawer, toggleDrawer }) => {
                 variant="h2"
                 style={{ fontSize: "14px", color: "rgba(131, 136, 150, 1)" }}
               >
-                O território do RCA tem apresentado baixos valores de venda
+                {appointmentsData && appointmentsData.description
+                  ? appointmentsData.description
+                  : ""}
               </Typography>
             </BackButtonTitle>
           </BackButtonState>
@@ -178,10 +230,9 @@ const ScheduleDrawer = ({ openDrawer, toggleDrawer }) => {
                 variant="h2"
                 style={{ fontSize: "14px", color: "rgba(131, 136, 150, 1)" }}
               >
-                We work with clients big and small across a range of sectors and
-                we utilise all forms of media to get your name out there in a
-                way that’s right for you.We work with clients big and small
-                across a range of sectors and
+                {appointmentsData && appointmentsData.start_comments
+                  ? appointmentsData.start_comments
+                  : ""}
               </Typography>
             </BackButtonTitle>
           </BackButtonState>
@@ -215,6 +266,7 @@ const ScheduleDrawer = ({ openDrawer, toggleDrawer }) => {
       <div className="px-14 flex justify-start items-center">
         <Button
           className="py-3"
+          onClick={closeDrawer}
           sx={{
             border: "1px solid rgba(43, 82, 221, 1)",
             width: "100%",

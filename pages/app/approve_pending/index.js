@@ -44,6 +44,7 @@ export default function Dashboard() {
   const [rejectDrawer, setRejectDrawer] = React.useState(false);
   const [approveDrawer, setApproveDrawer] = React.useState(false);
   const [scheduleDrawer, setScheduleDrawer] = React.useState(false);
+  const [appointment, setAppointment] = React.useState({});
   useEffect(() => {
     const userInfo = JSON.parse(Cookies.get(USER_INFO));
     const employee_id = 109974;
@@ -72,7 +73,8 @@ export default function Dashboard() {
     setApproveDrawer(val);
   };
 
-  const toggleScheduleDrawer = (val) => {
+  const toggleScheduleDrawer = (val, itemValue) => {
+    setAppointment(itemValue);
     setScheduleDrawer(val);
   };
 
@@ -229,7 +231,7 @@ export default function Dashboard() {
                     <NoStyleContentItemBody
                       href="#"
                       onClick={() => {
-                        toggleScheduleDrawer(true);
+                        toggleScheduleDrawer(true, item);
                       }}
                     >
                       <HistoryInfo>{renderHistoryInfo(item)}</HistoryInfo>
@@ -256,6 +258,7 @@ export default function Dashboard() {
       <ScheduleDrawer
         openDrawer={scheduleDrawer}
         toggleDrawer={toggleScheduleDrawer}
+        appointment={appointment}
       />
     </div>
   );

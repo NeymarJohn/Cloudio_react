@@ -13,6 +13,12 @@ import { useAxios } from "../../../hooks/useAxios";
 const DetailDrawer = ({ openDrawer, toggleDrawer, accommodation }) => {
   const { _axios, access_token } = useAxios();
   const [accommodationData, setAccommodationData] = React.useState({});
+  const [transactionData, setTransactionData] = React.useState({});
+
+  const closeDrawer = () => {
+    toggleDrawer(false);
+  }
+
   React.useEffect(() => {
     if (accommodation && accommodation.sequential_number) {
       const employee_id = 109974;
@@ -21,11 +27,20 @@ const DetailDrawer = ({ openDrawer, toggleDrawer, accommodation }) => {
           `${BASE_URL}/employees/${employee_id}/weeks/2023-06-12/expenses/accommodation/${accommodation.sequential_number}`
         )
         .then((res) => {
-          console.log(res.data.accommodation_expenses);
           res.data.accommodation_expenses.length > 0
             ? setAccommodationData(res.data.accommodation_expenses[0])
             : setAccommodationData({});
         });
+      
+      // _axios
+      //   .get(
+      //     `${BASE_URL}/employees/${employee_id}/weeks/2023-06-12/expenses/transportation/${accommodation.sequential_number}`
+      //   )
+      //   .then((res) => {
+      //     res.data.accommodation_expenses.length > 0
+      //       ? setAccommodationData(res.data.accommodation_expenses[0])
+      //       : setAccommodationData({});
+      //   });
     }
   }, [accommodation]);
   const content = () => (
@@ -267,6 +282,7 @@ const DetailDrawer = ({ openDrawer, toggleDrawer, accommodation }) => {
       </div>
       <div className="px-12 flex justify-start items-center">
         <Button
+          onClick={closeDrawer}
           className="py-3"
           sx={{
             border: "1px solid rgba(43, 82, 221, 1)",
