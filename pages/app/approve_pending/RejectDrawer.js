@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Drawer,
   Box,
@@ -13,9 +14,13 @@ import {
   ApproveButton,
 } from "./index.styled";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import React from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { BASE_URL, USER_INFO } from "../../../utils/constants";
+import { useAxios } from "../../../hooks/useAxios";
 
 const RejectDrawer = ({ openDrawer, toggleDrawer }) => {
+  const { _axios } = useAxios();
   const [comment, setComment] = React.useState('');
   const closeDrawer = () => {
     toggleDrawer(false);
@@ -27,6 +32,14 @@ const RejectDrawer = ({ openDrawer, toggleDrawer }) => {
 
   const handleReview = () => { 
     console.log('--------------', comment);
+    const employeeId = 109974;
+    _axios.patch(`${BASE_URL}/employees/${employeeId}/weeks/2023-06-12/expenses/reject`, { approver_id: employeeId, comments: comment }).then((res) => {
+      if (res.data.code == 0) {
+        toast.success("Successfully rejected");
+      } else {
+        toast.error(res.data.message);
+      }
+    })
   }
   const content = () => (
     <Box role="presentation" className="h-5/6">
@@ -124,6 +137,7 @@ const RejectDrawer = ({ openDrawer, toggleDrawer }) => {
       }}
     >
       {content()}
+      <ToastContainer />
     </Drawer>
   );
 };
